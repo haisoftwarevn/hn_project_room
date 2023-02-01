@@ -1,0 +1,108 @@
+<h1>WebRTC 2022 Create Zoom Clone Video Group Call Application</h1>
+
+<ul>
+  <li>
+    mã nguồn : tuyệt vời quá
+    <pre>
+            https://github.com/jayvanwyk/webrtc-advanced
+            https://github.com/MrTwister96/WebRTC-Advanced (chính chủ)
+        </pre
+    >
+  </li>
+  <li>
+    <pre>
+            ///////// server
+            npm install --save nodemon cors express socket.io twilio uuid 
+            
+        </pre
+    >
+    <pre>
+        ////////  frontend
+        npx create-react-app my-app --template redux
+        npm install --save axios react-router-dom redux-devtools-extension redux-thunk  
+        npm install --save socket.io-client 
+        npm install --save simple-peer
+    </pre>
+  </li>
+  <li>
+    hướng dẫn twilio
+    <pre>
+      ...todo : email: hitechpanda@gmail.com , pass: Test@20dmj-dangnamhai
+      ///todo
+      const accountSid = "ACf0bd24b02e9a5b2279f17fd5b03171e8";
+      const authToken = "ce93ac86e50b1e70f6b7279b5b51c6d7";
+    </pre>
+  </li>
+  <li>
+    kỷ thuật video :
+    <pre>
+      lấy stream từ camera
+      ////////
+      navigator.mediaDevices
+      .getUserMedia(defaultContraints)
+      .then((stream) => {
+        console.log("Successfully got local stream");
+        localStream = stream;
+  
+        showLocalVideoPreview(localStream);
+  
+        // dispatch an action to hide overlay
+        store.dispatch(setShowOverlay(false));
+        isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(identity, roomId);
+      })
+      .catch((err) => {
+        console.log("lổi gì vậy ba stream local::", err);
+      });
+    </pre>
+    <pre>
+      lấy stream từ display (màn hình)
+      ////
+      let stream = null;
+      try {
+        stream = await navigator.mediaDevices.getDisplayMedia(constraints);
+      } catch (error) {
+        console.log("lổi sharing screen rồi ba :: ", error);
+      }
+    </pre>
+  </li>
+  <li>
+    kỷ thuật: socket Io
+    <pre>
+      // join a room
+      socket.join(roomId)
+      // leave socket io room
+      socket.leave(user.roomId);
+  
+      //emit an event to all rest of users
+      io.to(room.id).emit("room-update", {
+        connectedUsers: room.connectedUsers,
+      });
+    </pre>
+  </li>
+  <li>
+    kỷ thuật: lấy params từ path
+    <pre>
+        ... todo
+        import { useParams } from "react-router-dom";
+        /////////////////
+        let { host } = useParams();
+        ////join-room?host=true
+    </pre>
+  </li>
+  <li>
+    ky thuat: lay tham số từ navigate
+    <pre>
+        import { useLocation } from "react-router-dom";
+        ///////////////
+        const search = useLocation().search;
+
+        useEffect(() => {
+          const isRoomHost = new URLSearchParams(search).get("host");
+          if (isRoomHost) {
+            //todo: setting our redux store that user is hot
+            console.log("isRoomHost::", isRoomHost);
+          }
+        }, []);
+    </pre>
+  </li>
+</ul>
